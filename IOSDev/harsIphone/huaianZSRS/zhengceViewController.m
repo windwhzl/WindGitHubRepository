@@ -1,0 +1,202 @@
+//
+//  zhengceViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-23.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "zhengceViewController.h"
+#import "niwenwodaListViewController.h"
+@interface zhengceViewController ()
+
+@end
+
+@implementation zhengceViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+}
+-(void) viewDidAppear:(BOOL)animated
+{
+    self.areaArray = @[@"请点击选择",@"全国",@"江苏省",@"淮安市",@"清河区",@"清浦区",@"淮阴区",@"淮安区",@"开发区",@"涟水",@"金湖",@"洪泽",@"盱眙",@"其他"];
+    self.typeArray = @[@"请点击选择",@"法律",@"法规",@"规章",@"江苏省政府文件",@"厅规范文件",@"厅业务文件",@"淮安市政府文件",@"市人社局文件",@"县区级文件（含县区局）",@"其他"];
+    [self.areaPicker reloadAllComponents];
+    [self.typePicker reloadAllComponents];
+}
+-(void) viewDidDisappear:(BOOL)animated
+{
+    _tishiLabel.hidden = YES;
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView == self.areaPicker) {
+        return [self.areaArray count];
+    }else{
+        return [self.typeArray count];
+    }
+    
+}
+-(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if ([pickerView isEqual:self.areaPicker]) {
+        return self.areaArray[row];
+    }else{
+        return self.typeArray[row];
+    }
+}
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if ([pickerView isEqual:self.areaPicker]) {
+        self.areaLabel.text = [self.areaArray[row] copy];
+        _keyWord1 = [self.areaLabel.text copy];
+    }else{
+        self.typeLabel.text = self.typeArray[row];
+        _keyWord2 = [self.typeLabel.text copy];
+    }
+}
+- (IBAction)areaButtonClick:(id)sender {
+    CATransition *animShow=[CATransition animation];
+    animShow.type=kCATransitionMoveIn ;
+    animShow.duration=0.5;
+    animShow.subtype = kCATransitionFromTop;
+    [self.areaPicker.layer addAnimation:animShow forKey:nil];
+    self.areaPicker.hidden = NO;
+    self.typePicker.hidden = YES;
+    self.dateView.hidden = YES;
+     [_keyWord4Field resignFirstResponder];
+}
+
+- (IBAction)typeButtonClick:(id)sender {
+    CATransition *animShow=[CATransition animation];
+    animShow.type=@"cube" ;
+    animShow.duration=0.5;
+    [self.typePicker.layer addAnimation:animShow forKey:nil];
+    
+    self.areaPicker.hidden = YES;
+    self.typePicker.hidden = NO;
+    self.dateView.hidden = YES;
+     [_keyWord4Field resignFirstResponder];
+    
+}
+- (IBAction)dateButtonClick:(id)sender {
+    CATransition *animShow=[CATransition animation];
+    animShow.type=@"rippleEffect" ;
+    animShow.duration=0.5;
+    [self.dateView.layer addAnimation:animShow forKey:nil];
+    
+    self.areaPicker.hidden = YES;
+    self.typePicker.hidden = YES;
+    [_keyWord4Field resignFirstResponder];
+    self.dateView.hidden = NO;
+    
+}
+
+- (IBAction)dissMissAll:(id)sender {
+    self.dateView.hidden = YES;
+    [_keyWord4Field resignFirstResponder];
+}
+- (IBAction)chaxunButtonClick:(id)sender {
+    if ([_areaLabel.text isEqualToString:@"请点击选择"]) {
+        _tishiLabel.hidden = NO;
+    }else {
+        UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+        niwenwodaListViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"niwenwodaListView"];
+        [listView setFlag:@"zcfg"];
+        if (self.keyWord1 !=nil) {
+            [listView setKeyWord1:[self getKeyWord1]];
+        }else {
+            [listView setKeyWord1:@""];
+        }
+        if (self.keyWord2 !=nil) {
+            [listView setKeyWord2:[self getKeyWord2]];
+        }else {
+            [listView setKeyWord2:@""];
+        }
+        if (self.keyWord3 !=nil) {
+            [listView setKeyWord3:[self getKeyWord3]];
+        }else {
+            [listView setKeyWord3:@""];
+        }
+        if (self.keyWord4Field.text !=nil) {
+            _keyWord4 = [self.keyWord4Field.text copy];
+            [listView setKeyWord4:[self getKeyWord4]];
+        }else {
+            [listView setKeyWord4:@""];
+        }
+        listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:listView animated:YES completion:nil];
+    }
+
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+-(void) setKeyWord1:(NSString *)keyWord1
+{
+    _keyWord1 = keyWord1;
+}
+-(NSString *) getKeyWord1
+{
+    return  _keyWord1;
+}
+-(void) setKeyWord2:(NSString *)keyWord2
+{
+    _keyWord2 = keyWord2;
+}
+-(NSString *) getKeyWord2
+{
+    return  _keyWord2;
+}
+-(void) setKeyWord3:(NSString *)keyWord3
+{
+    _keyWord3 = keyWord3;
+}
+-(NSString *) getKeyWord3
+{
+    return  _keyWord3;
+}
+-(void) setKeyWord4:(NSString *)keyWord4
+{
+    _keyWord4 = keyWord4;
+}
+-(NSString *) getKeyWord4
+{
+    return  _keyWord4;
+}
+- (IBAction)dateSelectedClick:(id)sender {
+    self.date = [self.datePicker date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateAndTime =  [dateFormatter stringFromDate:self.date];
+    self.keyWord3 = [dateAndTime copy];
+    self.dateLabel.text = [_keyWord3 copy];
+    self.dateView.hidden = YES;
+}
+
+- (IBAction)dateCancleClick:(id)sender {
+    self.dateView.hidden = YES;
+}
+@end

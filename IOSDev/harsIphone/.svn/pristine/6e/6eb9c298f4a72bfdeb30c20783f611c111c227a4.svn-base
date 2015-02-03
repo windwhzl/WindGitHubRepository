@@ -1,0 +1,37 @@
+//
+//  ybskmxDetailTableViewCell.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-11-4.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "ybskmxDetailTableViewCell.h"
+
+@implementation ybskmxDetailTableViewCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+-(void) setDdjg:(NSString *)ddjg
+{
+    _ddjg =[ddjg copy];
+    _ddjgLabel.text = [_ddjg copy];
+}
+-(void) setJsrq:(NSString *)jsrq
+{
+    _jsrq = [jsrq copy];
+    _jsrqLabel.text = [_jsrq copy];
+}
+-(void) setBcje:(NSString *)bcje
+{
+    _bcje = [bcje copy];
+    _bcjeLabel.text = [_bcje copy];
+}
+@end

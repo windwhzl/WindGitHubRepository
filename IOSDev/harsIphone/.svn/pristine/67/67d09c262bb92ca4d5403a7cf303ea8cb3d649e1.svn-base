@@ -1,0 +1,133 @@
+//
+//  qiuzhiRegisterViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-12-22.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "qiuzhiRegisterViewController.h"
+#import "SfzHelper.h"
+#import "HttpUtil.h"
+@interface qiuzhiRegisterViewController ()
+
+@end
+
+@implementation qiuzhiRegisterViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [_waiting stopAnimating];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+-(NSString*) getHttpJson{
+    NSString *JsonURLString;
+    JsonURLString = [NSString stringWithFormat:@"%@%@",[HttpUtil getUrl1],@"jobdata/ydzdAction!register.do"];
+    NSURL *url = [NSURL URLWithString:JsonURLString];
+    //创建请求
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
+    NSString *str ;//设置参数
+    
+    str = [NSString stringWithFormat:@"aac003=%@&aac002=%@&awb004=%@&aae139=%@",_xingmingTextField.text,_sfzhTextField.text,_mmTextField.text,_telTextField.text];
+    
+    NSData *data1 = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data1];
+    //第三步，连接服务器
+    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    if (received ==nil) {
+        return  nil;
+    }
+    NSString *str1 = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
+    NSString *jsonstring = str1;
+    NSData *data = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *getData = [NSJSONSerialization JSONObjectWithData:data
+                                                        options:NSJSONReadingAllowFragments
+                                                          error:nil];
+    NSData *jsonData = [getData dataUsingEncoding:NSUTF8StringEncoding ];
+    id result = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil];
+    NSString *jsonString = result[@"message"];
+    //    if (![state isEqualToString:@"1"]) {
+    //        return nil;
+    //    }
+    return jsonString;
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)quitEditing:(id)sender {
+    [_xingmingTextField resignFirstResponder];
+    [_sfzhTextField resignFirstResponder];
+    [_mmTextField resignFirstResponder];
+    [_qrmmTextField resignFirstResponder];
+    [_telTextField resignFirstResponder];
+}
+
+- (IBAction)zhuceButtonClick:(id)sender {
+    
+    if ([SfzHelper IdCardValidate:_sfzhTextField.text]
+        &&_xingmingTextField.text.length>1
+        &&_mmTextField.text.length>=6
+        &&[_qrmmTextField.text isEqualToString: _mmTextField.text]
+        &&_telTextField.text.length==11) {
+        dispatch_queue_t queue =
+        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(queue, ^{
+            __block NSString *httpString;
+            dispatch_group_t group =dispatch_group_create();
+            dispatch_group_async(group, queue, ^{
+                httpString = [self getHttpJson];
+            });
+            dispatch_group_async(group, queue, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_waiting startAnimating];
+                });
+            });
+            dispatch_group_notify(group, queue, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([httpString isEqualToString:@"注册成功"]) {
+                        httpString = @"注册成功，请登录";
+                    }
+                [self setMessageString:httpString];
+                [_waiting stopAnimating];
+                });
+            });
+        });
+
+        
+    } else {
+        if (![SfzHelper IdCardValidate:_sfzhTextField.text]) {
+          [self setMessageString:@"请输入正确的身份证号"];
+        }else if(_xingmingTextField.text.length<2) {
+            [self setMessageString:@"请输入正确姓名"];
+        }else if(_mmTextField.text.length<6) {
+            [self setMessageString:@"密码长度小于6位"];
+        }else if(![_qrmmTextField.text isEqualToString:_mmTextField.text]){
+             [self setMessageString:@"两次输入密码不一致"];
+        }else if(_telTextField.text.length!=11){
+            [self setMessageString:@"请输入正确的手机号"];
+        }
+    }
+
+}
+-(void) setMessageString:(NSString *)messageString
+{
+    _messageString = [messageString copy];
+    _messageLabel.text = [_messageString copy];
+}
+@end

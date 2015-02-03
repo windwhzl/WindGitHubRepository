@@ -1,0 +1,239 @@
+//
+//  zhiweishenqingViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-11-12.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "zhiweishenqingViewController.h"
+#import "HttpUtil.h"
+#import "qiuzhiLoginViewController.h"
+@interface zhiweishenqingViewController ()
+
+@end
+
+@implementation zhiweishenqingViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+-(void) viewDidAppear:(BOOL)animated
+{
+    dispatch_queue_t queue =
+    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        __block NSDictionary *httpDictionary;
+        dispatch_group_t group =dispatch_group_create();
+        dispatch_group_async(group, queue, ^{
+            httpDictionary = [self getHttpJson:[self getZhiweiID]];
+        });
+ 
+        dispatch_group_notify(group, queue, ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showZhiweixiangqing:httpDictionary];
+                [_waiting stopAnimating];
+                
+            });
+        });
+    });
+   
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+-(NSDictionary*) getHttpJson:(NSString*) zhiweiID
+{
+    NSString *JsonURLString;
+    JsonURLString = [NSString stringWithFormat:@"%@%@",[HttpUtil getUrl1],@"jobdata/ydzdAction!getCb21.do"];
+    NSURL *url = [NSURL URLWithString:JsonURLString];
+    //创建请求
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
+    NSString *str ;//设置参数
+    
+    str = [NSString stringWithFormat:@"id=%@",[self getZhiweiID]];
+    
+    NSData *data1 = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data1];
+    //第三步，连接服务器
+    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    if (received ==nil) {
+        return  nil;
+    }
+    NSString *str1 = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
+    NSString *jsonstring = str1;
+    NSData *data = [jsonstring dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *getData = [NSJSONSerialization JSONObjectWithData:data
+                                                        options:NSJSONReadingAllowFragments
+                                                          error:nil];
+    NSData *jsonData = [getData dataUsingEncoding:NSUTF8StringEncoding ];
+    id result = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:nil];
+    NSDictionary *jsonDictionary = result[@"obj"];
+    NSNumber *state = result[@"state"];
+//    if (state != 1) {
+//        return nil;
+//    }
+    return jsonDictionary;
+
+}
+-(void) showZhiweixiangqing:(NSDictionary*) json
+{
+
+    [self setZhiweixingzhi:json[@"acb21a"]];
+    [self setGongsimingcheng:json[@"aab004"]];
+    [self setGongzuodidian:json[@"bcb202"]];
+    [self setYuexin:json[@"acb214"]];
+    [self setZhaopinrenshu:json[@"acb21r"]];
+    [self setFaburiqi:json[@"aae030"]];
+    [self setJiezhiriqi:json[@"aae031"]];
+    [self setZhiweimiaoshu:json[@"acb21a"]];
+//    [self setZhuanye:json[@"aac014"]];
+//    [self setXingbie:json[@"aad004"]];
+    [self setXueli:json[@"aac011"]];
+    NSString *jsonNianling = [NSString stringWithFormat:@"%@-%@",json[@"acb221"],json[@"acb222"]];
+    [self setNianling:jsonNianling];
+    [self setYuyan:json[@"aac038"]];
+    [self setJingyan:json[@"acc217"]];
+    [self setRenzhizige:json[@"acb224"]];
+    [self setZhiweiID:json[@"id"]];
+}
+-(void) setZhiweixingzhi:(NSString *)zhiweixingzhi
+{
+    _zhiweixingzhi = [zhiweixingzhi copy];
+    _zhiweixingzhiLabel.text = [_zhiweixingzhi copy];
+}
+-(void) setGongsimingcheng:(NSString *)gongsimingcheng
+{
+    _gongsimingcheng = [gongsimingcheng copy];
+    _gongsimingchengLabel.text = [_gongsimingcheng copy];
+
+}
+-(void) getGongsimingcheng
+{
+    _gongsimingchengLabel.text = [_gongsimingcheng copy];
+}
+-(void) setGongzuodidian:(NSString *)gongzuodidian
+{
+    if (gongzuodidian.length>4) {
+        gongzuodidian = [gongzuodidian substringToIndex:4];
+    }
+
+    _gongzuodidian = [gongzuodidian copy];
+    _gongzuodidianLabel.text = [_gongzuodidian copy];
+}
+-(void) setYuexin:(NSString *)yuexin
+{
+    _yuexin = [yuexin copy];
+    _yuexinLabel.text = [_yuexin copy];
+}
+-(void)setZhaopinrenshu:(NSString*)zhaopinrenshu
+{
+    NSString * renshu = [NSString stringWithFormat:@"%@",zhaopinrenshu];
+    _zhaopinrenshu = [renshu copy];
+    _zhaopinrenshuLabel.text = [_zhaopinrenshu copy];
+}
+-(void) setFaburiqi:(NSString *)faburiqi
+{
+    NSArray *array = [faburiqi componentsSeparatedByString:@" "];
+    faburiqi = [array objectAtIndex:0];
+    _faburiqi = [faburiqi copy];
+    _faburiqiLabel.text = [_faburiqi copy];
+}
+-(void) setJiezhiriqi:(NSString *)jiezhiriqi
+{
+    NSArray *array = [jiezhiriqi componentsSeparatedByString:@" "];
+    jiezhiriqi = [array objectAtIndex:0];
+    _jiezhiriqi = [jiezhiriqi copy];
+    _jiezhiriqiLabel.text = [_jiezhiriqi copy];
+}
+-(void) setZhiweimiaoshu:(NSString *)zhiweimiaoshu
+{
+    _zhiweimiaoshu = [zhiweimiaoshu copy];
+    _zhiweimiaoshuLabel.text = [_zhiweimiaoshu copy];
+}
+-(void) setZhuanye:(NSString *)zhuanye
+{
+    if (zhuanye.length ==0) {
+        zhuanye = @"不限";
+    }
+    _zhuanye = [zhuanye copy];
+    _zhuanyeLabel.text = [_zhuanye copy];
+}
+-(void) setXingbie:(NSString *)xingbie
+{
+    if (xingbie.length == 0) {
+        xingbie = @"兼招";
+    }
+    _xingbie =[xingbie copy];
+    _xingbieLabel.text = [_xingbie copy];
+}
+-(void) setXueli:(NSString *)xueli
+{
+    _xueli = [xueli copy];
+    _xueliLabel.text = [_xueli copy];
+}
+-(void) setNianling:(NSString *)nianling
+{
+    _nianling = [nianling copy];
+    _nianlingLabel.text = [_nianling copy];
+}
+-(void) setYuyan:(NSString *)yuyan
+{
+    if (yuyan.length ==0) {
+        yuyan = @"不限";
+    }
+    _yuyan = [yuyan copy];
+    _yuyanLabel.text = [_yuyan copy];
+}
+-(void) setJingyan:(NSString *)jingyan
+{
+    if (jingyan.length == 0) {
+        jingyan = @"不限";
+    }else {
+        
+        jingyan = [NSString stringWithFormat:@"%@年",jingyan];
+    }
+    _jingyan = [jingyan copy];
+    _jingyanLabel.text = [jingyan copy];
+}
+-(void) setRenzhizige:(NSString *)renzhizige
+{
+    _renzhizige = [renzhizige copy];
+    _renzhizigeLabel.text =[_renzhizige copy];
+    _renzhizigeLabel.textColor = [UIColor blueColor];
+}
+
+-(void) setZhiweiID:(NSString *)zhiweiID
+{
+    _zhiweiID = [zhiweiID copy];
+}
+-(NSString*) getZhiweiID
+{
+    return _zhiweiID;
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)zhiweishenqingButtonClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"qiyezhaopin" bundle:nil];
+    qiuzhiLoginViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"qiuzhiLoginView"];
+    [listView setZhiweiId:[self getZhiweiID]];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+@end

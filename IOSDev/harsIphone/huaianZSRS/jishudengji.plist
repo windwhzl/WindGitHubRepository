@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>string_value</key>
+		<string>职业资格五级（初级技能）</string>
+		<key>key_value</key>
+		<string>1</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>职业资格四级（中级技能）</string>
+		<key>key_value</key>
+		<string>2</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>职业资格三级（高级技能）</string>
+		<key>key_value</key>
+		<string>3</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>职业资格二级（技师）</string>
+		<key>key_value</key>
+		<string>4</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>职业资格一级（高级技师）</string>
+		<key>key_value</key>
+		<string>5</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>初级专业技术职务</string>
+		<key>key_value</key>
+		<string>6</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>中级专业技术职务</string>
+		<key>key_value</key>
+		<string>7</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>高级专业技术职务</string>
+		<key>key_value</key>
+		<string>8</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>无技术等级或职称</string>
+		<key>key_value</key>
+		<string>9</string>
+	</dict>
+	<dict>
+		<key>string_value</key>
+		<string>无要求</string>
+		<key>key_value</key>
+		<string>10</string>
+	</dict>
+</array>
+</plist>

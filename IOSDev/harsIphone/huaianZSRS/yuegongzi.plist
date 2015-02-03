@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=1</string>
+		<key>typeString</key>
+		<string>0-999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=2</string>
+		<key>typeString</key>
+		<string>1000-1999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=3</string>
+		<key>typeString</key>
+		<string>2000-2999元</string>
+	</dict>
+	<dict>
+		<key>type</key>
+		<string>acb214=4</string>
+		<key>typeString</key>
+		<string>3000-3999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=5</string>
+		<key>typeString</key>
+		<string>4000-4999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=6</string>
+		<key>typeString</key>
+		<string>5000-6999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=7</string>
+		<key>typeString</key>
+		<string>7000-9999元</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=8</string>
+		<key>typeString</key>
+		<string>1万元以上</string>
+	</dict>
+	<dict>
+		<key>typeValue</key>
+		<string>acb214=9</string>
+		<key>typeString</key>
+		<string>面议</string>
+	</dict>
+</array>
+</plist>

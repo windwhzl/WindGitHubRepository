@@ -1,0 +1,26 @@
+//
+//  qiyezhaopinTableViewCell.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-22.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface qiyezhaopinTableViewCell : UITableViewCell
+@property (copy, nonatomic) NSString *zhiwei;
+@property (copy, nonatomic) NSString *gongsi;
+@property (copy, nonatomic) NSString *riqi;
+@property (copy, nonatomic) NSString *gongzi;
+@property (copy, nonatomic) NSString *didian;
+@property (copy, nonatomic) NSString *jiezhiriqi;
+
+@property (strong, nonatomic) IBOutlet UILabel *zhiweiLabel;
+@property (strong, nonatomic) IBOutlet UILabel *gongsiLabel;
+@property (strong, nonatomic) IBOutlet UILabel *riqiLabel;
+@property (strong, nonatomic) IBOutlet UILabel *gongziLabel;
+@property (strong, nonatomic) IBOutlet UILabel *didianLabel;
+@property (strong, nonatomic) IBOutlet UILabel *jiezhiriqiLabel;
+
+@end

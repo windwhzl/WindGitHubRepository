@@ -1,0 +1,168 @@
+//
+//  fuwujigouViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "fuwujigouViewController.h"
+#import "fujgListViewController.h"
+#import "ShouyeViewController.h"
+#import "AlertDialogWhenFunctionNotComplete.h"
+#import "SystemSetViewController.h"
+@interface fuwujigouViewController ()
+
+@end
+
+@implementation fuwujigouViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"xianqu" ofType:@"plist"];
+    _dic = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+    NSArray *allKey = [_dic allKeys];
+    NSArray *sorted = [allKey sortedArrayUsingSelector:@selector(compare:)];
+    _xianquArray =sorted;
+    NSString *xianqu = _xianquArray[0];
+    self.xiangzhenArray = _dic[xianqu];
+    
+    _keyWord1 = @"";
+    _keyWord2 = @"";
+    _isFirstCickXianqu = YES;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)zhuyeClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    ShouyeViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"ShouyeView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)xianquButtonClick:(id)sender {
+    [_villageTextField resignFirstResponder];
+    CATransition *animShow=[CATransition animation];
+    animShow.type=kCATransitionMoveIn ;
+    animShow.duration=0.5;
+    animShow.subtype = kCATransitionFromTop;
+    [_xianquPicker.layer addAnimation:animShow forKey:nil];
+    _xianquPicker.hidden = NO;
+    _xiangzhenPicker.hidden = YES;
+    
+    if (_isFirstCickXianqu) {
+        _xianquLabel.text = [[self pickerView:_xianquPicker titleForRow:0 forComponent:0] copy];
+        _isFirstCickXianqu = NO;
+    }
+
+}
+
+- (IBAction)xiangzhenButtonClick:(id)sender {
+    [_villageTextField resignFirstResponder];
+    CATransition *animShow=[CATransition animation];
+    animShow.type=@"cube" ;
+    animShow.duration=0.5;
+    [_xiangzhenPicker.layer addAnimation:animShow forKey:nil];
+    _xianquPicker.hidden = YES;
+    _xiangzhenPicker.hidden = NO;
+}
+
+- (IBAction)moreFunction:(id)sender {
+    SystemSetViewController *systemSet = [[SystemSetViewController alloc] initWithNibName:nil bundle:nil];
+    systemSet.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:systemSet animated:YES completion:nil];
+}
+
+- (IBAction)chaxunClick:(id)sender {
+    [_villageTextField resignFirstResponder];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    fujgListViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"fujgListView"];
+    [listView setKeyword1:_xianquLabel.text];
+    if ([_xiangzhenLabel.text isEqualToString:@"直属机构"]) {
+        
+        [listView setKeyword2:@""];
+        
+    } else {
+    
+        [listView setKeyword2:_xiangzhenLabel.text];
+    }
+    [listView setKeyword3:_villageTextField.text];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+-(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView.tag == 0) {
+        return [_xianquArray count];
+    }else {
+        return [_xiangzhenArray count];
+    }
+}
+-(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView.tag == 0) {
+        NSString *arrayXianqu =_xianquArray[row];
+        NSArray *splitArray = [arrayXianqu componentsSeparatedByString:@" "];
+        NSString *xianqu = [splitArray objectAtIndex:1];
+        return xianqu;
+    }else {
+        return _xiangzhenArray[row];
+    }
+}
+-(void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (pickerView.tag ==0) {
+        NSString *selectedXianqu = _xianquArray[row];
+        _xiangzhenArray = _dic[selectedXianqu];
+        [_xiangzhenPicker reloadComponent:0];
+        [_xiangzhenPicker selectRow:0 inComponent:0 animated:YES];
+        _xianquLabel.text = [[self pickerView:_xianquPicker titleForRow:row forComponent:component] copy];
+
+        _xiangzhenLabel.text =[[self pickerView:_xiangzhenPicker titleForRow:0 forComponent:0] copy];
+  
+    }else {
+       _xiangzhenLabel.text =[[self pickerView:pickerView titleForRow:row forComponent:component] copy];
+    }
+}
+- (IBAction)dissMissKeyBoard:(id)sender {
+    [_villageTextField resignFirstResponder];
+}
+
+-(void) setKeyWord1:(NSString *)keyWord1
+{
+    _keyWord1 = [keyWord1 copy];
+}
+-(NSString*) getKeyWord1
+{
+    return _keyWord1;
+}
+-(void) setKeyWord2:(NSString *)keyWord2
+{
+    _keyWord2 = [keyWord2 copy];
+}
+-(NSString*) getKeyWord2
+{
+    return _keyWord2;
+}
+@end

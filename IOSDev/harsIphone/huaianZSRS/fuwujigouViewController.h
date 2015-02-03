@@ -1,0 +1,34 @@
+//
+//  fuwujigouViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface fuwujigouViewController : UIViewController
+                                    <UIPickerViewDataSource,UIPickerViewDelegate>
+
+- (IBAction)dismissSelf:(id)sender;
+- (IBAction)chaxunClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *xianquLabel;
+@property (strong, nonatomic) IBOutlet UILabel *xiangzhenLabel;
+@property (strong, nonatomic) IBOutlet UITextField *villageTextField;
+@property (strong, nonatomic) IBOutlet UIPickerView *xianquPicker;
+@property (strong, nonatomic) IBOutlet UIPickerView *xiangzhenPicker;
+@property (strong, nonatomic) NSDictionary *dic;
+@property (strong, nonatomic) NSArray *xianquArray;
+@property (strong, nonatomic) NSArray *xiangzhenArray;
+- (IBAction)zhuyeClick:(id)sender;
+- (IBAction)xianquButtonClick:(id)sender;
+- (IBAction)xiangzhenButtonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *xiangzhenButton;
+@property (strong, nonatomic) IBOutlet UIButton *chaxunButton;
+@property (nonatomic) BOOL isFirstCickXianqu;
+- (IBAction)dissMissKeyBoard:(id)sender;
+- (IBAction)moreFunction:(id)sender;
+@property (copy, nonatomic) NSString *keyWord1;
+@property (copy, nonatomic) NSString *keyWord2;
+@end

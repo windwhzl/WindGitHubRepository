@@ -1,0 +1,227 @@
+//
+//  PeopleInfo1ViewController.m
+//  qiuzhidengji
+//
+//  Created by xiaomage on 14/11/21.
+//  Copyright (c) 2014年 xiaomage. All rights reserved.
+//
+
+#import "PeopleInfo1.h"
+
+
+@interface PeopleInfo1 ()
+
+@end
+
+@implementation PeopleInfo1
+@synthesize nationArray;
+
+- (void)viewDidLoad {
+    
+    self.nationArray=[[NSArray alloc]initWithObjects:@"汉族",@"壮族",@"满族",@"回族",@"苗族",@"维吾尔族",@"彝族",@"土家族",@"蒙古族",@"藏族"
+                      ,@"傣（dǎi）族",@"僳僳（lì,sù）族",@"朝鲜族",@"高山族",@"纳西族",@"布朗族",@"阿昌族",@"怒族",@"鄂温克族",@"鄂伦春族"
+                      ,@"赫哲族",@"门巴族",@"白族",@"保安族",@"布依族",@"达斡（wò）尔族",@"德昂族",@"东乡族",@"侗（dòng）族",@"独龙族"
+                      ,@"俄罗斯族",@"哈尼族",@"哈萨克族",@"基诺族",@"京族",@"景颇族",@"柯尔克孜族",@"拉祜（hù）族",@"黎族",@"畲（shē）族"
+                      ,@"珞（luò）巴族",@"毛南族",@"仫佬（mù,lǎo）族",@"普米族",@"羌（qiāng）族",@"撒拉族",@"水族",@"塔吉克族",@"塔塔尔族",@"仡佬（gē,lǎo）族"
+                      ,@"土族",@"佤（wǎ）族",@"乌孜别克族",@"锡伯族",@"瑶族",@"裕固族"
+                      ,@"其他",@"外国血统"
+                      , nil];
+    
+    self.dateFormatter=[[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    self.nameTextField.delegate=self;
+    
+    //获取父ViewController的引用
+    self.parent=(PeopleTabBarControllerViewController *)self.parentViewController;
+    
+    self.dateView.hidden=YES;
+    self.minzuView.hidden=YES;
+    
+    //让性别设置为默认的“男”
+    self.sexSegment.selectedSegmentIndex=0;
+    
+    // 设置名族选择器的数据源为本类
+    self.minzuPicker.dataSource=self;
+    // 设置名族选择器的代理为本类
+    self.minzuPicker.delegate=self;
+    //是名族选择器重新加载数据
+    [self.minzuPicker reloadAllComponents];
+    
+    [super viewDidLoad];
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    if(self.parent.nation>0){
+       self.minzuLabel.text =[self.nationArray objectAtIndex:(self.parent.nation-1)];
+    }
+    if(self.parent.birthday.length>0){
+        self.birthdayLabel.text=self.parent.birthday;
+    }
+}
+
+// 返回UIViewPicker的组件数(转轮数)
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+
+// 每个转轮中的项目数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    return [self.nationArray count];
+}
+
+// 转轮中每项显示的标题
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    return [self.nationArray objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+//    if([textField isEqual:self.nameTextField]){
+//        if(string.length==0){
+//            return YES;
+//        }
+//        if(textField.text.length>9){
+//            return NO;
+//        }
+//    }
+//    return YES;
+//}
+
+- (IBAction)selectMinzu:(id)sender {
+    CATransition *animShow=[CATransition animation];
+    animShow.type=@"rippleEffect";
+    animShow.duration=0.5;
+    [self.minzuView.layer addAnimation:animShow forKey:nil];
+    self.minzuView.hidden=NO;
+/*
+    self.minzuBtn.hidden=YES;
+    self.birthdayBtn.hidden=YES;
+ */
+    
+}
+
+- (IBAction)minzuPickerSureBtnClick:(id)sender {
+    CATransition *animFade=[CATransition animation];
+    animFade.type=@"rippleEffect";
+    animFade.duration=0.5;
+    [self.minzuView.layer addAnimation:animFade forKey:nil];
+    self.minzuView.hidden=YES;
+    
+//    self.minzuBtn.titleLabel.text=[self.nationArray objectAtIndex:[self.minzuPicker selectedRowInComponent:0]];
+//    self.minzuBtn.tintColor = [UIColor whiteColor];
+//    self.minzuBtn.hidden=NO;
+//    self.birthdayBtn.hidden=NO;
+    _minzuLabel.text = [self.nationArray objectAtIndex:[self.minzuPicker selectedRowInComponent:0]];
+
+
+}
+
+
+- (IBAction)selectBirthday:(id)sender {
+    CATransition *animShow=[CATransition animation];
+    animShow.type=@"rippleEffect";
+    animShow.duration=0.5;
+    [self.dateView.layer addAnimation:animShow forKey:nil];
+    self.dateView.hidden=NO;
+    self.minzuBtn.hidden=YES;
+    self.birthdayBtn.hidden=YES;
+    
+}
+
+- (IBAction)datePickerSureBtnClick:(id)sender {
+    CATransition *animFade=[CATransition animation];
+    animFade.type=@"rippleEffect";
+    animFade.duration=0.5;
+    [self.dateView.layer addAnimation:animFade forKey:nil];
+    self.dateView.hidden=YES;
+    self.minzuBtn.hidden=NO;
+    self.birthdayBtn.hidden=NO;
+//    self.birthdayBtn.titleLabel.text=[self.dateFormatter stringFromDate:self.datePicker.date];
+//    self.birthdayBtn.tintColor = [UIColor whiteColor];
+    _birthdayLabel.text =[self.dateFormatter stringFromDate:self.datePicker.date];
+}
+
+//当手指开始触摸屏幕时，将触发该delegate方法
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+    // 手指开始触摸的位置
+    touchBegan_ = [[touches anyObject] locationInView:self.view];
+}
+
+// 当手指在屏幕上移动时，将触发该delegate方法
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
+    // 手指移动后，手指离开的位置
+    CGPoint point = [[touches anyObject] locationInView:self.view];
+    //
+    if((touchBegan_.x-point.x)>100){
+        [self allMessageIsOk];
+    }
+    
+}
+
+- (IBAction)hideKeyboard:(id)sender {
+    [self.nameTextField resignFirstResponder];
+}
+
+- (IBAction)nextPage:(id)sender {
+    [self allMessageIsOk];
+}
+
+-(void) allMessageIsOk{
+    //获取姓名
+    NSString *nameStr=[self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    BOOL nameIsOk=(nameStr.length>0)&&(![nameStr isEqualToString:@"点击输入姓名"]);
+    
+    //获取选择的性别，0=男，1=女
+    NSInteger sexIndex=self.sexSegment.selectedSegmentIndex;
+    
+    //获取选择的生日
+    NSString *birthdayStr=[self.birthdayLabel.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    BOOL birthdayIsOk=(![birthdayStr isEqualToString:@"点击选择出身日期"]);
+    
+    //获取选择的名族
+    NSString *minzuStr=[self.minzuLabel.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    BOOL minzuIsOk=(![minzuStr isEqualToString:@"点击选择民族"]);
+    
+    NSMutableString *alertMsg=[NSMutableString stringWithCapacity:40];
+    
+    if(!nameIsOk){
+        [alertMsg appendString:@"请输入姓名！\n"];
+    }
+    if(!minzuIsOk){
+        [alertMsg appendString:@"请选择民族！\n"];
+    }
+    if(!birthdayIsOk){
+        [alertMsg appendString:@"请选择出生日期！\n"];
+    }
+    
+    
+    if(nameIsOk && minzuIsOk && birthdayIsOk){
+        self.parent.name=nameStr;
+        self.parent.sex=(sexIndex==0?@"男":@"女");
+        self.parent.nation=[self.minzuPicker selectedRowInComponent:0]+1;
+        self.parent.birthday=birthdayStr;
+
+        self.parent.selectedIndex=1;
+    }else{
+        UIAlertView *alertView=[[UIAlertView alloc] initWithTitle:@"错误提示！" message:alertMsg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+
+}
+
+- (IBAction)cancel:(id)sender {
+    [self.parent dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)backButtonClick:(id)sender {
+    [self.parent dismissViewControllerAnimated:YES completion:nil];
+}
+@end

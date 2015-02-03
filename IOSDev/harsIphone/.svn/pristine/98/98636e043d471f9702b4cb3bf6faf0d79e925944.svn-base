@@ -1,0 +1,56 @@
+//
+//  PeopleInfo1ViewController.h
+//  qiuzhidengji
+//
+//  Created by xiaomage on 14/11/21.
+//  Copyright (c) 2014年 xiaomage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "PeopleTabBarControllerViewController.h"
+
+@interface PeopleInfo1 : UIViewController<UIPickerViewDataSource,UITextFieldDelegate,UIPickerViewDelegate>{
+    @private
+    CGPoint touchBegan_;
+}
+
+
+@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *sexSegment;
+@property (strong, nonatomic) IBOutlet UIButton *minzuBtn;
+@property (strong, nonatomic) IBOutlet UIButton *birthdayBtn;
+- (IBAction)backButtonClick:(id)sender;
+
+
+
+//条用该方法将显示日期选择视图
+- (IBAction)selectBirthday:(id)sender;
+//日期选择组件
+@property (strong, nonatomic) IBOutlet UIView *dateView;
+@property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (strong, nonatomic) IBOutlet UILabel *birthdayLabel;
+- (IBAction)datePickerSureBtnClick:(id)sender;
+
+
+//条用该方法将显示名族现则视图
+- (IBAction)selectMinzu:(id)sender;
+//名族选择组件
+@property (strong, nonatomic) IBOutlet UIView *minzuView;
+@property (strong, nonatomic) IBOutlet UIPickerView *minzuPicker;
+@property (strong, nonatomic) IBOutlet UILabel *minzuLabel;
+- (IBAction)minzuPickerSureBtnClick:(id)sender;
+
+//定义了日期<-->字符串项目转换的格式
+@property (nonatomic) NSDateFormatter *dateFormatter;
+
+//存放各民族名称的数组
+@property(nonatomic) NSArray *nationArray;
+
+@property(nonatomic,retain) PeopleTabBarControllerViewController *parent;
+
+
+
+- (IBAction)hideKeyboard:(id)sender;
+- (IBAction)nextPage:(id)sender;
+- (IBAction)cancel:(id)sender;
+@end

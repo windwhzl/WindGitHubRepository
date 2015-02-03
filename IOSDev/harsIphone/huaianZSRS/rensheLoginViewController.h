@@ -1,0 +1,25 @@
+//
+//  rensheLoginViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-12-1.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface rensheLoginViewController : UIViewController
+@property (strong, nonatomic) IBOutlet UITextField *userTextField;
+@property (strong, nonatomic) IBOutlet UITextField *passWordTextField;
+- (IBAction)dissmissKeyBoard:(id)sender;
+- (IBAction)loginButtonClick:(id)sender;
+- (IBAction)upEditView:(id)sender;
+- (IBAction)dismissSelf:(id)sender;
+@property (strong, nonatomic) IBOutlet UIView *editView;
+@property (nonatomic) CGRect editViewFrame;
+@property (strong, nonatomic) IBOutlet UILabel *tishiLabel;
+
+@property (strong, nonatomic) IBOutlet UIView *memberView;
+@property (strong, nonatomic) IBOutlet UIImageView *memberIndicatorImageView;
+
+@end

@@ -1,0 +1,116 @@
+//
+//  niwenwodaViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "niwenwodaViewController.h"
+#import "zhengceViewController.h"
+#import "qkSearchViewController.h"
+#import "zhishiwendaViewController.h"
+#import "mohuSearchViewController.h"
+#import "ShouyeViewController.h"
+#import "AlertDialogWhenFunctionNotComplete.h"
+#import "SystemSetViewController.h"
+@interface niwenwodaViewController ()
+
+@end
+
+@implementation niwenwodaViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (IBAction)zcfgButtonClick:(id)sender {
+    [self setQianjinFlag:1];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    zhengceViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"zhengceView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)qkssButtonClick:(id)sender {
+     [self setQianjinFlag:2];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    qkSearchViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"qkSearchView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)zswdButtonClick:(id)sender {
+    [self setQianjinFlag:3];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    zhishiwendaViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"zhishiwendaView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)mhssButtonClick:(id)sender {
+    [self setQianjinFlag:4];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    mohuSearchViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"mohuSearchView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(IBAction)qianjinClick:(id)sender
+{
+    switch ([self getQianjinFlag]) {
+        case 1:
+            [self zcfgButtonClick:sender];
+            break;
+        case 2:
+            [self qkssButtonClick:sender];
+            break;
+        case 3:
+            [self zswdButtonClick:sender];
+            break;
+        case 4:
+            [self mhssButtonClick:sender];
+            break;
+        default:
+            break;
+    }
+}
+- (IBAction)zhuyeClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    ShouyeViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"ShouyeView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)moreFunction:(id)sender {
+    SystemSetViewController *systemSet = [[SystemSetViewController alloc] initWithNibName:nil bundle:nil];
+    systemSet.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:systemSet animated:YES completion:nil];
+}
+-(void) setQianjinFlag:(int)qianjinFlag
+{
+    _qianjinFlag = qianjinFlag;
+}
+-(int) getQianjinFlag
+{
+    return  _qianjinFlag;
+}
+@end

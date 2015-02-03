@@ -1,0 +1,52 @@
+//
+//  wycyListViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-28.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface wycyListViewController : UIViewController
+                                    <UITableViewDelegate,UITableViewDataSource>
+@property (strong, nonatomic) IBOutlet UILabel *showNoneMessage;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *waiting;
+@property (strong, nonatomic) IBOutlet UITableView *showTableView;
+@property (strong, nonatomic) NSMutableArray *dataList;
+@property (strong, nonatomic) NSArray *conditionArray;
+@property (nonatomic) int page;
+@property (strong, nonatomic) NSString *flag;
+@property (nonatomic) int newsType;
+@property (nonatomic) int count;
+@property (nonatomic) BOOL isFinished;
+@property (strong, nonatomic) IBOutlet UILabel *titileLabel;
+@property (strong, nonatomic) NSString *titleString;
+@property (strong, nonatomic) IBOutlet UIView *showConditionView;
+@property (strong, nonatomic) IBOutlet UIButton *bacButton;
+- (IBAction)dismissSelf:(id)sender;
+- (IBAction)searchButtonClick:(id)sender;
+- (IBAction)dismissButtonClick:(id)sender;
+- (IBAction)moreFunction:(id)sender;
+
+-(void) changeTitle:(NSString*) title;
+- (IBAction)startSearchButtonClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UITextField *keyWordTextField;
+@property (strong, nonatomic) IBOutlet UIImageView *searchImage;
+
+@property (strong, nonatomic) IBOutlet UILabel *searchTitleLabel;
+
+@property (strong, nonatomic) IBOutlet UILabel *tishiLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tixingLabel;
+@property (strong, nonatomic) IBOutlet UITableView *searchConditionTable;
+- (IBAction)missKeyboard:(id)sender;
+@property (nonatomic) BOOL isSearch;
+@property (copy, nonatomic) NSString *mark;
+@property (copy,nonatomic) NSString *riqiFanwei;
+@property (copy, nonatomic) NSString *zhuaQuKeyWord;
+@property (assign, nonatomic) NSUInteger *selected;
+@property (nonatomic) BOOL isFirst;
+@property (strong, nonatomic) IBOutlet UIButton *freshButton;
+- (IBAction)freshButtonClick:(id)sender;
+
+@end

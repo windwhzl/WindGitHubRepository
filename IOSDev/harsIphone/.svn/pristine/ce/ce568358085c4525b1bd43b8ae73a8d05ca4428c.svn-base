@@ -1,0 +1,103 @@
+//
+//  renshikaoshiViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "renshikaoshiViewController.h"
+#import "rsksListViewController.h"
+#import "zhaokaoxinxiViewController.h"
+#import "wycyListViewController.h"
+#import "ShouyeViewController.h"
+#import "kaoshichengjiViewController.h"
+@interface renshikaoshiViewController ()
+
+@end
+
+@implementation renshikaoshiViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+- (IBAction)cjcxButtonClick:(id)sender {
+    [self setQianjinFlag:3];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    wycyListViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"wycyListView"];
+    [listView setNewsType:202];
+    [listView setFlag:@"cjcx"];
+    [listView setTitleString:@"成绩查询"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)zkxxButtonClick:(id)sender {
+    [self setQianjinFlag:2];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    zhaokaoxinxiViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"zhaokaoxinxiView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)wsbmButtonClick:(id)sender {
+    [self setQianjinFlag:1];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    kaoshichengjiViewController *listView = [mainStory                     instantiateViewControllerWithIdentifier:@"kaoshichengjiView"];
+    NSString* hrefSring = @"http://www.harsks.com/News/SignUpMore.aspx";
+    [listView setHrefString:hrefSring];
+    [listView setTitleString:@"网上报名"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(IBAction)qianjinClick:(id)sender
+{
+    switch ([self getQianjinFlag]) {
+        case 1:
+            [self wsbmButtonClick:sender];
+            break;
+        case 2:
+            [self zkxxButtonClick:sender];
+            break;
+        case 3:
+            [self cjcxButtonClick:sender];
+            break;
+        default:
+            break;
+    }
+}
+- (IBAction)zhuyeClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    ShouyeViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"ShouyeView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+-(void) setQianjinFlag:(int)qianjinFlag
+{
+    _qianjinFlag = qianjinFlag;
+}
+-(int) getQianjinFlag
+{
+    return  _qianjinFlag;
+}
+@end

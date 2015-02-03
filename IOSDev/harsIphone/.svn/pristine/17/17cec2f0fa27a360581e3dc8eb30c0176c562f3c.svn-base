@@ -1,0 +1,26 @@
+//
+//  qiuzhiLoginViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-12-22.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@interface qiuzhiLoginViewController : UIViewController
+@property (strong, nonatomic) NSString *zhiweiId;
+
+@property (strong, nonatomic) IBOutlet UITextField *userTextField;
+@property (strong, nonatomic) NSString *userString;
+
+@property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) NSString *passwordString;
+- (IBAction)loginButtonClick:(id)sender;
+
+- (IBAction)quitEditing:(id)sender;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *waiting;
+@property (strong, nonatomic) IBOutlet UILabel *messageLabel;
+@property (strong, nonatomic) NSString *message;
+- (IBAction)registerButtonClick:(id)sender;
+- (IBAction)dismissSelf:(id)sender;
+@end

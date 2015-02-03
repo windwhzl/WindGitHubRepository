@@ -1,0 +1,141 @@
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<title>淮安市人力资源和社会保障局</title>
+<style type="text/css">
+<!--
+body,td,th {
+	font-family: 宋体;
+	font-size: 12px;
+	color: #5D5D5D;
+}
+body {
+	background-color: #E4E4E4;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	text-align: center;
+}
+.bg td{background-color:#FFFFFF;}
+-->
+</style>
+
+<script type="text/javascript" src="/web/harsj/js/util.js"></script>
+<link href="/web/harsj/css/zym.css" rel="stylesheet" type="text/css"/>
+<link href="/web/harsj/css/yersss.css" rel="stylesheet" type="text/css"/>
+<script>
+function voil(obj){
+	var info=document.getElementById("info");
+	if(obj.name.value&&obj.tel.value&&obj.bname.value&&obj.baddress.value&&obj.title.value&&obj.content.value&&obj.code.value.length==4){
+		return true;
+	}else if(!obj.name.value){
+		info.innerHTML="请填写 举报投诉人姓名";
+	}else if(!obj.tel.value){
+		info.innerHTML="请填写 举报投诉联系电话";
+	}else if(!obj.bname.value){
+		info.innerHTML="请填写 被举报投诉单位或个人名称";
+	}else if(!obj.baddress.value){
+		info.innerHTML="请填写 被举报投诉单位或个人地址";
+	}else if(!obj.title.value){
+		info.innerHTML="请填写 举报投诉主题";
+	}else if(!obj.content.value){
+		info.innerHTML="请填写 举报投诉详细内容";
+	}else if(!obj.code.value || obj.code.value.length!=4){
+		info.innerHTML="请填写 附加码";
+	}
+	return false;
+}
+</script>
+</head>
+<body>
+<script type="text/javascript" src="/web/harsj/js/header2.js"></script>
+<script type="text/javascript" src="/web/harsj/js/12333zxfw/12333Index.js"></script>        
+    <script type="text/javascript" src="/web/harsj/js/left.js"></script>  
+     
+<table width=90% border="0" cellspacing="1" cellpadding="0" class="bg" bgcolor="#999999" align="center">
+	  <tr width=100%>
+		<td colspan="4" height="70">&nbsp;填写说明：<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、带<font color="#FF0000">﹡</font>的项目为必填项。填写相关栏时须明确举报对象，违规行为的事实，明确违规行为发生地点、时间及相关单位或个人。<br/><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、注意附加码的准确填写，否则在提交后因错误附加码而导致整张表重新填写。
+		</td>
+	  </tr>
+	  <form action="http://admin.huaian.gov.cn/web/harsj/res/sbjbcommit.jsp" method="post" target="_blank" onSubmit="return voil(this)">
+	  <tr >
+		<td width=30% height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">举报投诉人姓名：</td>
+		<td width=70% colspan="3">&nbsp;<input type="text" name="name"/><font color="#FF0000">﹡</font></td>
+				
+	  </tr>
+	  <tr>
+	  	<td height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">举报投诉联系电话：</td>
+		<td colspan="3">&nbsp;<input type="text" name="tel"/><font color="#FF0000">﹡</font></td>
+	  </tr>
+	  <tr>
+		<td width="50px" height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">举报投诉电子邮箱：</td>
+		<td colspan="3">&nbsp;<input type="text" name="mail"/></td>
+	</tr>
+	<tr>
+		<td height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">举报投诉通讯地址：</td>
+		<td colspan="3">&nbsp;<input type="text" name="address" size="70"/></td>
+	  </tr>
+	  <tr>
+		<td height="30" style="font-weight:bold;background-color:#CCCCCC" align="right">被举报投诉单位或个人名称：</td>
+		<td colspan="3">&nbsp;<input type="text" name="bname"/><font color="#FF0000">﹡</font></td>
+
+	  </tr>
+	  <tr>
+	  	<td height="30" style="font-weight:bold;background-color:#CCCCCC" align="right">被举报投诉单位或个人电话：</td>
+		<td colspan="3">&nbsp;<input type="text" name="btel"/></td>
+	  </tr>
+	  <tr>
+		<td height="30" style="font-weight:bold;background-color:#CCCCCC" align="right">被举报投诉单位或个人地址：</td>
+		<td colspan="3">&nbsp;<input type="text" name="baddress" size="70"/><font color="#FF0000">﹡</font></td>
+	  </tr>
+	  <tr>
+		<td height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">举报投诉主题：</td>
+		<td colspan="3">&nbsp;<input type="text" name="title" size="70"/><font color="#FF0000">﹡</font></td>
+	  </tr>
+	  <tr>
+		<td align="right" height="170" style="font-weight:bold;background-color:#CCCCCC">举报投诉详细内容：</td>
+		<td colspan="3">
+		&nbsp;<textarea cols="69" rows="10" name="content"></textarea><font color="#FF0000">﹡</font>
+		</td>
+	  </tr>
+	  <tr>
+		<td height="30" align="right" style="font-weight:bold;background-color:#CCCCCC">附加码：</td>
+		<td colspan="3">&nbsp;<input type="text" name="code" size="4" maxlength="4"/>&nbsp;附加码框请输入&nbsp;<img src="http://admin.huaian.gov.cn/web/harsj/res/image.jsp" border="0"	/>	</td>
+	  </tr>
+	  <script>
+	  //var img=document.getElementById("img");
+	  //var date=new Date();
+	 // img.src="http://222.184.79.9:7001/md5/image.jsp?tm="+date.getTime();
+	  </script>
+	  <tr>
+		<td colspan="4" style="color:#FF0000" height="30" id="info" align="center">&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td colspan="4" height="40" align="center">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="提交"/>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="重置"/>
+		&nbsp;&nbsp;<span><a href="xjcx.html" target="_blank">信件查询</a></span>
+		</td>
+	  </tr>
+	  </form>
+	</table>
+
+      <table width="50" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10"></td>
+        </tr>
+      </table>
+      
+    </div></td>
+  </tr>
+</table>
+<!--begin foot-->
+<script type="text/javascript" src="/web/harsj/js/footer.js"></script>
+<!--end foot-->
+</body>
+</html>

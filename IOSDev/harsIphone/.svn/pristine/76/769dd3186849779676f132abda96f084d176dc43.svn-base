@@ -1,0 +1,120 @@
+//
+//  qkSearchViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-23.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "qkSearchViewController.h"
+#import "niwenwodaListViewController.h"
+@interface qkSearchViewController ()
+
+@end
+
+@implementation qkSearchViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+
+}
+-(void) viewDidAppear:(BOOL)animated{
+    self.keywordArray=@[@"请点击选择",@"综合",@"养老",@"市场管理",@"人才开发",@"外国专家",@"医疗",@"工伤",@"工资福利",@"人事考试"
+                        ,@"社保综合",@"生育",@"仲裁",@"社保缴纳",@"培训鉴定",@"劳动保护",@"检查",@"其他",@"劳动关系",@"劳动工资",@"公务员管理",@"就业和失业",@"事业单位管理",@"专家和国际合作",@"专业技术人员管理",@"工人技术等级岗位考核"];
+    [_keywordPicker reloadAllComponents];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (IBAction)keywordButtonclick:(id)sender {
+    self.keywordPicker.hidden = NO;
+    [self quitEdit];
+}
+
+- (IBAction)chaxunButtonClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    niwenwodaListViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"niwenwodaListView"];
+    [listView setFlag:@"qk"];
+    [listView setKeyWord1:[self getKeyWord1]];
+    if (self.keyWord2Field.text != nil) {
+        _keyWord2 = [self.keyWord2Field.text copy];
+    }else{
+        _keyWord2 =@"";
+    }
+    if (self.keyWord3Field.text != nil) {
+        _keyWord3 = [self.keyWord3Field.text copy];
+    }else{
+        _keyWord3 =@"";
+    }
+    [listView setKeyWord2:[self getKeyWord2]];
+    [listView setKeyWord3:[self getKeyWord3]];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+-(NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return  [self.keywordArray count];
+}
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return self.keywordArray[row];
+}
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.keywordLabel.text = [self.keywordArray[row] copy];;
+    self.keyWord1 = [self.keywordLabel.text copy];
+}
+
+-(void) setKeyWord1:(NSString *)keyWord1
+{
+    _keyWord1 = keyWord1;
+}
+-(NSString *) getKeyWord1
+{
+    return  _keyWord1;
+}
+-(void) setKeyWord2:(NSString *)keyWord2
+{
+    _keyWord2 = keyWord2;
+}
+-(NSString *) getKeyWord2
+{
+    return  _keyWord2;
+}
+-(void) setKeyWord3:(NSString *)keyWord3
+{
+    _keyWord3 = keyWord3;
+}
+-(NSString *) getKeyWord3
+{
+    return  _keyWord3;
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)dissMissKeyboard:(id)sender {
+    [self quitEdit];
+}
+-(void) quitEdit
+{
+    [_keyWord2Field resignFirstResponder];
+    [_keyWord3Field resignFirstResponder];
+}
+@end

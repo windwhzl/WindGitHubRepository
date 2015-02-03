@@ -1,0 +1,90 @@
+//
+//  SystemSetViewController.m
+//  huaianZSRS
+//
+//  Created by xiaomage on 15/1/20.
+//  Copyright (c) 2015年 Kyo-PC. All rights reserved.
+//
+
+#import "SystemSetViewController.h"
+#import "AboutUsViewController.h"
+#import "PopView.h"
+
+@interface SystemSetViewController ()
+
+@end
+
+@implementation SystemSetViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //获取保存的网页字体大小
+    
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear: animated];
+    //先判断是否有用户信息可清除
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    if([userDefaults boolForKey:@"isMemberSfzhAndName"]||[userDefaults boolForKey:@"isMemberLoginSfzhAndPwd"]){//如果之前已经记住了身份证号和姓名
+        _userInfoLabel.text=@"可清理";
+    }else{
+        _userInfoLabel.text=@"已清理";
+    }
+    //实验一下，是否能显示出圆角
+    self.webFontSizeView.layer.cornerRadius=5.0f;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (IBAction)emptyUserInfo:(id)sender {
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    if([userDefaults boolForKey:@"isMemberSfzhAndName"]||[userDefaults boolForKey:@"isMemberLoginSfzhAndPwd"]){//如果之前已经记住了身份证号和姓名
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"提示信息" message:@"用户信息包括了五险查询和求职招聘的账户信息，确定要清除这两个账户信息？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"立即清除", nil];
+        [alert show];
+    }else{
+        PopView *popView=[[PopView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/2-50, self.view.bounds.size.height-60, 100.0, 10.0)];
+        [self.view addSubview:popView];
+        [popView setText:@"清理成功！"];
+    }
+}
+
+//UIAlertView的代理方法
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex!=alertView.cancelButtonIndex){
+        NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+        //清空用户信息
+        [userDefaults setBool:false forKey:@"isMemberSfzhAndName"];
+        [userDefaults setObject:@"" forKey:@"userName"];
+        [userDefaults setObject:@"" forKey:@"userSfzh"];
+        
+        [userDefaults setBool:false forKey:@"isMemberLoginSfzhAndPwd"];
+        [userDefaults setObject:@"" forKey:@"loginUserName"];
+        [userDefaults setObject:@"" forKey:@"loginUserPwd"];
+        [userDefaults synchronize];
+        _userInfoLabel.text=@"已清理";
+        
+    }
+}
+
+- (IBAction)aboutUs:(id)sender {
+    AboutUsViewController *aboutUs=[[AboutUsViewController alloc] initWithNibName:nil bundle:nil];
+    aboutUs.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:aboutUs animated:YES completion:nil];
+}
+
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+@end

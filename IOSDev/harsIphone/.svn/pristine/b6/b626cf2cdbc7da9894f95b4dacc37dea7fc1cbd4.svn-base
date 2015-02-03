@@ -1,0 +1,105 @@
+//
+//  woyaoqiuzhiViewController.m
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import "woyaoqiuzhiViewController.h"
+#import "wyqzListViewController.h"
+#import "qiyezhaopinViewController.h"
+#import "ShouyeViewController.h"
+#import "AlertDialogWhenFunctionNotComplete.h"
+#import "qiuzhisousuoViewController.h"
+#import "SystemSetViewController.h"
+@interface woyaoqiuzhiViewController ()
+
+@end
+
+@implementation woyaoqiuzhiViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (IBAction)qyzpButtonClick:(id)sender {
+    [self setQianjinFlag:1];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"qiyezhaopin" bundle:nil];
+    qiuzhisousuoViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"qiuzhisousuoView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)qzdjButtonClick:(id)sender {
+    
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"qiuzhidengji" bundle:nil];
+    qiyezhaopinViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"PeopleTabBarControllerViewController"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+    
+}
+
+- (IBAction)zphButtonClick:(id)sender {
+     [self setQianjinFlag:3];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    wyqzListViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"wyqzListView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+- (IBAction)dismissSelf:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(IBAction)qianjinClick:(id)sender
+{
+    switch ([self getQianjinFlag]) {
+        case 1:
+            [self qyzpButtonClick:sender];
+            break;
+        case 2:
+            
+            break;
+        case 3:
+            [self zphButtonClick:sender];
+            break;
+        default:
+            break;
+    }
+}
+- (IBAction)zhuyeClick:(id)sender {
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"MainStory" bundle:nil];
+    ShouyeViewController *listView = [mainStory instantiateViewControllerWithIdentifier:@"ShouyeView"];
+    listView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:listView animated:YES completion:nil];
+}
+
+- (IBAction)moreFunction:(id)sender {
+    SystemSetViewController *systemSet = [[SystemSetViewController alloc] initWithNibName:nil bundle:nil];
+    systemSet.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:systemSet animated:YES completion:nil];
+}
+-(void) setQianjinFlag:(int)qianjinFlag
+{
+    _qianjinFlag = qianjinFlag;
+}
+-(int) getQianjinFlag
+{
+    return  _qianjinFlag;
+}
+@end

@@ -1,0 +1,18 @@
+//
+//  kaoshichengjiViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-11-13.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface kaoshichengjiViewController : UIViewController  <UIWebViewDelegate>
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (copy, nonatomic) NSString *titleString;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *waiting;
+@property (strong, nonatomic) IBOutlet UIWebView *kscjWebView;
+- (IBAction)dismissSelf:(id)sender;
+@property (copy, nonatomic) NSString *hrefString;
+@end

@@ -1,0 +1,68 @@
+//
+//  zhiweishenqingViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-11-12.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface zhiweishenqingViewController : UIViewController<UIAlertViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UILabel *zhiweixingzhiLabel;
+@property (copy, nonatomic) NSString *zhiweixingzhi;
+
+@property (strong, nonatomic) IBOutlet UILabel *gongsimingchengLabel;
+@property (copy, nonatomic) NSString *gongsimingcheng;
+
+@property (strong, nonatomic) IBOutlet UILabel *gongzuodidianLabel;
+@property (copy, nonatomic) NSString *gongzuodidian;
+
+@property (strong, nonatomic) IBOutlet UILabel *yuexinLabel;
+@property (copy, nonatomic) NSString *yuexin;
+
+@property (strong, nonatomic) IBOutlet UILabel *zhaopinrenshuLabel;
+@property (copy, nonatomic) NSString *zhaopinrenshu;
+
+@property (strong, nonatomic) IBOutlet UILabel *faburiqiLabel;
+@property (copy, nonatomic) NSString *faburiqi;
+
+@property (strong, nonatomic) IBOutlet UILabel *jiezhiriqiLabel;
+@property (strong, nonatomic) NSString *jiezhiriqi;
+
+@property (strong, nonatomic) IBOutlet UILabel *zhiweimiaoshuLabel;
+@property (copy, nonatomic) NSString *zhiweimiaoshu;
+
+@property (strong, nonatomic) IBOutlet UILabel *zhuanyeLabel;
+@property (copy, nonatomic) NSString *zhuanye;
+
+@property (strong, nonatomic) IBOutlet UILabel *xingbieLabel;
+@property (copy, nonatomic) NSString *xingbie;
+
+@property (strong, nonatomic) IBOutlet UILabel *xueliLabel;
+@property (copy, nonatomic) NSString *xueli;
+
+@property (strong, nonatomic) IBOutlet UILabel *nianlingLabel;
+@property (copy, nonatomic) NSString *nianling;
+
+@property (strong, nonatomic) IBOutlet UILabel *yuyanLabel;
+@property (copy, nonatomic) NSString *yuyan;
+
+@property (strong, nonatomic) IBOutlet UILabel *jingyanLabel;
+@property (copy, nonatomic) NSString *jingyan;
+
+@property (strong, nonatomic) IBOutlet UITextView *renzhizigeLabel;
+@property (copy, nonatomic) NSString *renzhizige;
+
+@property (copy, nonatomic) NSString* zhiweiID;
+
+@property (copy, nonatomic) NSString* shenqingName;
+@property (copy, nonatomic) NSString* shenqingPwd;
+
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *waiting;
+- (IBAction)dismissSelf:(id)sender;
+- (IBAction)zhiweishenqingButtonClick:(id)sender;
+- (IBAction)cleanLoginSfzhAndPwd:(id)sender;
+
+@end

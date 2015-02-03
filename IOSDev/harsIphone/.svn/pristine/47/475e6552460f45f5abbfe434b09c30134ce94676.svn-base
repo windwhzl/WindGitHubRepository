@@ -1,0 +1,23 @@
+//
+//  fuwujigouViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-10-29.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface fuwujigouViewController : UIViewController
+                                    <UIPickerViewDataSource,UIPickerViewDelegate>
+
+- (IBAction)dismissSelf:(id)sender;
+- (IBAction)chaxunClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *xianquLabel;
+@property (strong, nonatomic) IBOutlet UILabel *xiangzhenLabel;
+@property (strong, nonatomic) IBOutlet UIPickerView *xianquPicker;
+@property (strong, nonatomic) NSDictionary *dic;
+@property (strong, nonatomic) NSArray *xianquArray;
+@property (strong, nonatomic) NSArray *xiangzhenArray;
+- (IBAction)zhuyeClick:(id)sender;
+@end

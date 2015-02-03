@@ -1,0 +1,25 @@
+//
+//  qiuzhiRegisterViewController.h
+//  huaianZSRS
+//
+//  Created by Kyo-PC on 14-12-22.
+//  Copyright (c) 2014年 Kyo-PC. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface qiuzhiRegisterViewController : UIViewController
+- (IBAction)dismissSelf:(id)sender;
+@property (strong, nonatomic) IBOutlet UITextField *xingmingTextField;
+@property (strong, nonatomic) IBOutlet UITextField *sfzhTextField;
+@property (strong, nonatomic) IBOutlet UITextField *mmTextField;
+@property (strong, nonatomic) IBOutlet UITextField *qrmmTextField;
+@property (strong, nonatomic) IBOutlet UITextField *telTextField;
+
+@property (strong, nonatomic) IBOutlet UILabel *messageLabel;
+@property (strong, nonatomic) NSString *messageString;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *waiting;
+- (IBAction)quitEditing:(id)sender;
+
+- (IBAction)zhuceButtonClick:(id)sender;
+@end
