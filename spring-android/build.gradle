@@ -1,0 +1,301 @@
+buildscript {
+	repositories { 
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+	dependencies { 
+		classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
+		classpath("io.spring.gradle:docbook-reference-plugin:0.3.0")
+		classpath("me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1")
+	}
+}
+
+configure(allprojects) {
+	group = "org.springframework.android"
+
+	ext.androidVersion           = "4.1.1.4"
+	ext.springSocialVersion      = "1.1.0.RELEASE"
+	ext.springSecurityVersion    = "3.1.3.RELEASE"
+	ext.jacksonVersion           = "1.9.13"
+	ext.jackson2Version          = "2.3.4"
+	ext.gsonVersion              = "2.3.1"
+	ext.simpleXmlVersion         = "2.7.1"
+	ext.okHttpVersion            = "2.1.0"
+	ext.httpclientVersion        = "4.3.5"
+	ext.gradleScriptDir          = "${rootProject.projectDir}/gradle"
+
+	apply plugin: 'propdeps'
+	apply plugin: 'propdeps-maven'
+	apply plugin: 'propdeps-eclipse'
+	apply plugin: 'propdeps-idea'
+	apply plugin: "java"
+	apply plugin: "eclipse"
+	apply plugin: "idea"
+	apply plugin: "javadocHotfix"
+
+	sourceCompatibility=1.6
+	targetCompatibility=1.6
+
+	[compileJava, compileTestJava]*.options*.compilerArgs = [
+		"-Xlint:serial",
+		"-Xlint:varargs",
+		"-Xlint:cast",
+		"-Xlint:classfile",
+		"-Xlint:dep-ann",
+		"-Xlint:divzero",
+		"-Xlint:empty",
+		"-Xlint:finally",
+		"-Xlint:overrides",
+		"-Xlint:path",
+		"-Xlint:processing",
+		"-Xlint:static",
+		"-Xlint:try",
+		"-Xlint:-options",     // intentionally disabled
+		"-Xlint:-fallthrough", // intentionally disabled
+		"-Xlint:-rawtypes",    // TODO enable and fix warnings
+		"-Xlint:deprecation",
+		"-Xlint:unchecked"
+	]
+
+	repositories {
+		maven { url "https://repo.spring.io/libs-release" }
+	}
+
+	ext.javadocLinks = [
+		"http://docs.jboss.org/jbossas/javadoc/4.0.5/connector/",
+		"http://jackson.codehaus.org/1.9.4/javadoc/",
+		"http://fasterxml.github.com/jackson-core/javadoc/2.3.0/",
+		"http://fasterxml.github.com/jackson-databind/javadoc/2.3.0/",
+		"http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/",
+		"http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/"
+	] as String[]
+
+	// servlet-api (2.5) and tomcat-servlet-api (3.0) classpath entries should not be
+	// exported to dependent projects in Eclipse to avoid false compilation errors due
+	// to changing APIs across these versions
+	eclipse.classpath.file.whenMerged { classpath ->
+		classpath.entries.findAll { entry -> entry.path.contains("servlet-api") }*.exported = false
+	}
+}
+
+configure(subprojects) { subproject ->
+	apply from: "${gradleScriptDir}/publish-maven.gradle"
+
+	jar {
+		manifest.attributes["Created-By"] =
+				"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+		manifest.attributes["Implementation-Title"] = subproject.name
+		manifest.attributes["Implementation-Version"] = subproject.version
+
+		from("${rootProject.projectDir}/src/dist") {
+			include "license.txt"
+			include "notice.txt"
+			into "META-INF"
+			expand(copyright: new Date().format("yyyy"), version: project.version)
+		}
+	}
+
+	javadoc {
+		description = "Generates project-level javadoc for use in -javadoc jar"
+
+		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+		options.author = true
+		options.header = project.name
+		options.links(project.ext.javadocLinks)
+		if (JavaVersion.current().isJava8Compatible()) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+	}
+
+	task sourcesJar(type: Jar, dependsOn:classes) {
+		classifier = "sources"
+		from sourceSets.main.allJava
+	}
+
+	task javadocJar(type: Jar) {
+		classifier = "javadoc"
+		from javadoc
+	}
+
+	artifacts {
+		archives sourcesJar
+		archives javadocJar
+	}
+}
+
+project("spring-android-core") {
+	description = "Spring for Android Core"
+	
+	ext.mavenTestDir = "../test/spring-android-core-test/pom.xml"
+	
+	dependencies {
+		provided("com.google.android:android:$androidVersion")
+	}
+}
+
+project("spring-android-auth") {
+	description = "Spring for Android Auth"
+	
+	ext.mavenTestDir = "../test/spring-android-auth-test/pom.xml"
+	
+	dependencies {
+		provided("com.google.android:android:$androidVersion")
+		compile(project(":spring-android-core"))
+		compile(project(":spring-android-rest-template"))
+		compile("org.springframework.social:spring-social-core:$springSocialVersion") {
+			// exclude spring-web in favor of spring-android-rest-template
+			exclude group: "org.springframework", module: "spring-web"
+		}
+		compile("org.springframework.security:spring-security-crypto:$springSecurityVersion") { dep ->
+			transitive = false
+		}
+	}
+}
+
+project("spring-android-rest-template") {
+	description = "Spring for Android Rest Template"
+
+	ext.mavenTestDir = "../test/spring-android-rest-template-test/pom.xml"
+
+	dependencies {
+		provided("com.google.android:android:$androidVersion")
+		compile(project(":spring-android-core"))
+		optional("org.apache.httpcomponents:httpclient-android:$httpclientVersion")
+		optional("com.squareup.okhttp:okhttp-urlconnection:$okHttpVersion")
+		optional("org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion")
+		optional("com.fasterxml.jackson.core:jackson-databind:$jackson2Version")
+		optional("com.google.code.gson:gson:$gsonVersion")
+		optional("org.simpleframework:simple-xml:$simpleXmlVersion") { dep ->
+			transitive = false
+		}
+	}
+}
+
+configure(subprojects) { subproject ->
+	task testAndroid(type: Exec, dependsOn: install) {
+		// suppress all console output during testing unless running `gradle --info`
+		logging.captureStandardOutput(LogLevel.INFO)
+		commandLine "mvn", "clean", "install", "-f", subproject.ext.mavenTestDir
+	}
+}
+
+configure(rootProject) {
+	description = "Spring for Android"
+
+	apply plugin: "docbook-reference"
+
+	reference {
+		sourceDir = file("src/reference/docbook")
+	}
+
+	// don't publish the default jar for the root project
+	configurations.archives.artifacts.clear()
+
+	dependencies {
+		// for integration tests
+	}
+
+	task api(type: Javadoc) {
+		group = "Documentation"
+		description = "Generates aggregated Javadoc API documentation."
+		title = "${rootProject.description} ${version} API"
+		options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+		options.author = true
+		options.header = rootProject.description
+		options.overview = "src/api/overview.html"
+		options.links(project.ext.javadocLinks)
+		if (JavaVersion.current().isJava8Compatible()) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+
+		source subprojects.collect { project ->
+			project.sourceSets.main.allJava
+		}
+
+		classpath = files(subprojects.collect { project ->
+			project.sourceSets.main.compileClasspath
+		})
+
+		maxMemory = "1024m"
+		destinationDir = new File(buildDir, "api")
+	}
+
+	task docsZip(type: Zip) {
+		group = "Distribution"
+		classifier = "docs"
+		description = "Builds -${classifier} archive containing api and reference " +
+				"for deployment at static.springframework.org/spring-android/docs."
+
+		from("src/dist") { 
+			include "changelog.txt" 
+		}
+
+		from (api) { 
+			into "api" 
+		}
+
+		from (reference) { 
+			into "reference" 
+		}
+	}
+
+	task distZip(type: Zip, dependsOn: docsZip) {
+		group = "Distribution"
+		classifier = "dist"
+		description = "Builds -${classifier} archive, containing all jars and docs, " +
+				"suitable for community download page."
+
+		def baseDir = "${project.name}-${project.version}"
+
+		from("src/dist") {
+			include "readme.txt"
+			include "license.txt"
+			include "notice.txt"
+			into "${baseDir}"
+			expand(copyright: new Date().format("yyyy"), version: project.version)
+		}
+
+		from(zipTree(docsZip.archivePath)) { 
+			into "${baseDir}/docs" 
+		}
+
+		subprojects.each { subproject ->
+			into ("${baseDir}/libs") {
+				from subproject.jar
+				if (subproject.tasks.findByPath("sourcesJar")) {
+					from subproject.sourcesJar
+				}
+				if (subproject.tasks.findByPath("javadocJar")) {
+					from subproject.javadocJar
+				}
+			}
+		}
+	}
+
+	artifacts {
+		archives docsZip
+		archives distZip
+	}
+
+	task wrapper(type: Wrapper) {
+		gradleVersion = "1.12"
+	}
+}
+
+task updateRootDocs {
+	copy {
+		from "src/dist"
+		into "${rootProject.projectDir}"
+		include "notice.txt"
+		expand(copyright: new Date().format("yyyy"), version: project.version)
+		rename { filename -> "NOTICE" }
+	}
+
+	copy {
+		from "src/dist"
+		into "${rootProject.projectDir}"
+		include "license.txt"
+		rename { filename -> "LICENSE" }
+	}
+}
+
+build.dependsOn(updateRootDocs)
